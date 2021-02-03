@@ -1,0 +1,1005 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "这是<a target='_blank' href='https://github.com/DavidNineRoc/monday-shop'>monday-shop</a>的 api 文档, 在这里你可以看到所有可用的 API!!! 文档中响应预期返回是`Example Value`, 需要查看字段含义请查看`Model`切换查看\n如果在文档测试需登录的接口,请点击文档右边的小锁头,使用登录的token进行验证身份\n全局成功状态码: `200, 201(创建成功) 204(删除成功)`",
+    "version": "1.0.0",
+    "title": "API 文档",
+    "contact": {
+      "email": "1033404553@qq.com"
+    }
+  },
+  "host": "shop.shiguopeng.cn",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "登录授权验证相关的接口"
+    },
+    {
+      "name": "Product",
+      "description": "商品相关的接口"
+    },
+    {
+      "name": "OWN",
+      "description": "个人相关的接口"
+    }
+  ],
+  "parameters": {
+    "limit": {
+      "name": "limit",
+      "in": "query",
+      "default": "10",
+      "description": "分页参数的取的条数",
+      "type": "integer"
+    },
+    "page": {
+      "name": "page",
+      "in": "query",
+      "default": "1",
+      "type": "integer",
+      "description": "分页参数的页码"
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/categories": {
+      "get": {
+        "summary": "获取商品的拥有分类",
+        "description": "此接口暂时不支持排序,因为后台设置有排序字段",
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "token": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "name": "name",
+            "description": "分类的名字,模糊查询",
+            "type": "string",
+            "required": false,
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Category"
+                  }
+                },
+                "count": {
+                  "type": "string",
+                  "default": "数据的总条数"
+                }
+              },
+              "example": {
+                "code": 200,
+                "msg": "success",
+                "data": [
+                  {
+                    "id": 1,
+                    "name": "个人护理",
+                    "description": "Consequatur nostrum blanditiis dolor alias et.",
+                    "icon": "fa-pencil",
+                    "thumb": "https://lorempixel.com/110/110/?47191"
+                  },
+                  {
+                    "id": 2,
+                    "name": "运动户外",
+                    "description": "Eos autem repellat et maiores autem iste labore.",
+                    "icon": "",
+                    "thumb": "https://lorempixel.com/110/110/?20394"
+                  },
+                  {
+                    "id": 3,
+                    "name": "电脑办公",
+                    "description": "Dolor repudiandae sunt sed inventore quaerat.",
+                    "icon": "",
+                    "thumb": "https://lorempixel.com/110/110/?49939"
+                  },
+                  {
+                    "id": 4,
+                    "name": "珠宝饰品",
+                    "description": "Deleniti voluptates neque consequatur fugiat.",
+                    "icon": "",
+                    "thumb": "https://lorempixel.com/110/110/?39035"
+                  },
+                  {
+                    "id": 5,
+                    "name": "手机数码",
+                    "description": "Et dolore eos reiciendis.",
+                    "icon": "",
+                    "thumb": "https://lorempixel.com/110/110/?10489"
+                  },
+                  {
+                    "id": 6,
+                    "name": "美食零食",
+                    "description": "Iusto corporis et nihil et cupiditate.",
+                    "icon": "",
+                    "thumb": "https://lorempixel.com/110/110/?54091"
+                  },
+                  {
+                    "id": 7,
+                    "name": "鲜花园艺",
+                    "description": "Illum quod vel nam facere in voluptates dolore.",
+                    "icon": "",
+                    "thumb": "https://lorempixel.com/110/110/?13912"
+                  },
+                  {
+                    "id": 8,
+                    "name": "品质汽车",
+                    "description": "Ipsam impedit aut eos corporis et velit.",
+                    "icon": "",
+                    "thumb": "https://lorempixel.com/110/110/?93450"
+                  }
+                ],
+                "count": 8
+              }
+            }
+          }
+        }
+      }
+    },
+    "/categories/{category}/products": {
+      "get": {
+        "summary": "获取某个分类下的商品",
+        "description": "获取某个分类下的商品, 支持排序",
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "token": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/page"
+          },
+          {
+            "name": "category",
+            "description": "分类的主键",
+            "type": "integer",
+            "required": true,
+            "in": "path"
+          },
+          {
+            "name": "name",
+            "description": "商品的名字,模糊查询",
+            "type": "string",
+            "required": false,
+            "in": "query"
+          },
+          {
+            "name": "order_field",
+            "description": "排序的字段, created_at 创建时间, safe_count 销售数量, view_count 浏览次数",
+            "type": "string",
+            "default": "created_at",
+            "in": "query",
+            "enum": [
+              "created_at", "safe_count", "view_count"
+            ]
+          },
+          {
+            "name": "order_value",
+            "description": "排序的值",
+            "type": "string",
+            "in": "query",
+            "default": "asc",
+            "enum": [
+              "asc", "desc"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Product"
+                  }
+                },
+                "count": {
+                  "type": "string",
+                  "default": "数据的总条数"
+                }
+              },
+              "example": {
+                "code": 200,
+                "msg": "success",
+                "data": [
+                  {
+                    "uuid": "062f18c3-0ae2-4560-b050-18eab1cb43c2",
+                    "name": "朗界（RugGear） RG860 反恐黑 移动/联通2G 三防户外运动对讲手机 双卡双待",
+                    "title": "岁末大促销 无流量免费硬件对讲；IP67 防水防摔防尘；待机450小时；可货到付款！",
+                    "price": 198000,
+                    "original_price": 336600,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/04d4b494-1563-45e1-d852-0742662399e4.jpeg",
+                    "sale_count": 0,
+                    "count": 49296,
+                    "view_count": 0
+                  },
+                  {
+                    "uuid": "af0dc354-7f85-44c9-9336-dfea0603b489",
+                    "name": "三盟 名博D68 移动/联通2G老人手机 黑色",
+                    "title": "清仓特价！大哥大手机 可货到付款！复古功能手机，豪华气派好手机，传承经典，彰显非凡！！！",
+                    "price": 16800,
+                    "original_price": 21840,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/267a6a24-8a36-2a30-4276-58a8f74422c3.jpeg",
+                    "sale_count": 0,
+                    "count": 11754,
+                    "view_count": 3
+                  },
+                  {
+                    "uuid": "6f9d0950-58e1-453c-9c23-6cc61ea00334",
+                    "name": "博瑞（BROR）G2 移动4G手机手机 白色",
+                    "title": "四核5英寸高清视网膜屏,多模4G智能手机,时尚商务外观！",
+                    "price": 69900,
+                    "original_price": 90870,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/c6f90341-0d02-ad2f-37f9-607fd4887129.jpeg",
+                    "sale_count": 0,
+                    "count": 4011,
+                    "view_count": 0
+                  },
+                  {
+                    "uuid": "db59ebf8-b0f2-45d1-bbd2-422a401fe7b6",
+                    "name": "大显(DaXian) C189 电信2G老人手机 白色",
+                    "title": "【京东直发】直板按键老人手机 一键拨号 整点报时 手电筒",
+                    "price": 13800,
+                    "original_price": 17940,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/bb012404-f949-46a6-4b7c-e3573e83bae3.jpeg",
+                    "sale_count": 0,
+                    "count": 13313,
+                    "view_count": 3
+                  },
+                  {
+                    "uuid": "81b84a52-be1e-4bc8-97da-404b4929033d",
+                    "name": "三盟翻盖老人手机Q9 移动/联通2G 双卡双待 咖啡色",
+                    "title": "【领券更优惠】再返100券再送电池/耳机 双屏翻盖金属机身3.0英寸超大触控手写高清屏",
+                    "price": 26800,
+                    "original_price": 45560,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/6e9632f4-07c9-c9b9-b8a2-3a2910e41a87.jpeg",
+                    "sale_count": 0,
+                    "count": 31724,
+                    "view_count": 0
+                  },
+                  {
+                    "uuid": "f90a68b4-5ed9-45f7-a769-4b22dad2e632",
+                    "name": "vivo X5V 双卡双待 电信4G手机 极光白",
+                    "title": "乐享开学季·购机送移动电源+蓝牙耳机·纤薄电信4G·八核CPU·2G运行内存",
+                    "price": 248800,
+                    "original_price": 323440,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/e9159271-6860-8204-8d9f-e8aa011ef0ef.jpeg",
+                    "sale_count": 0,
+                    "count": 43664,
+                    "view_count": 0
+                  },
+                  {
+                    "uuid": "50988365-cfb3-403e-bb69-4d2e3c98253c",
+                    "name": "誉品(YEPEN) T20 移动/联通2G手机 双卡双待 咖啡色",
+                    "title": "开学优惠!超长待机微信老人手机 直板手机 按键手机 触屏 真手电筒 京东极速配送",
+                    "price": 19900,
+                    "original_price": 27860,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/27cb4410-e614-7253-10f5-22eb4496e655.jpeg",
+                    "sale_count": 0,
+                    "count": 89361,
+                    "view_count": 0
+                  },
+                  {
+                    "uuid": "b103fd97-69e4-49c1-8241-702b317f1e7d",
+                    "name": "HelloCom Z213 电信2G 直板老人手机 红色",
+                    "title": "9个一键拨号  2600毫安时电池  大字体大音量大按键  超长待机 货到付款 晒单有礼",
+                    "price": 14800,
+                    "original_price": 26640,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/d4ff3dc6-6cc4-708d-b74d-49011edfb2e1.jpeg",
+                    "sale_count": 0,
+                    "count": 79053,
+                    "view_count": 0
+                  },
+                  {
+                    "uuid": "73034c1f-e85f-465f-b3cd-eecf9f2bb9e7",
+                    "name": "创佳(canca)39HWE6300 F2 39英寸全高清平板液晶电视机 有线电视 带壁挂底座+礼包",
+                    "title": "39英寸窄边设计支持高清视频连接和USB多媒体 <a href=\"http://item.jd.com/1211301957.html\"target=\"_blank\">同款促销价1699元更多优惠等着你</a>",
+                    "price": 399800,
+                    "original_price": 559720,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/1a300017-1d4a-46d0-3c77-96443ea2cbf1.jpeg",
+                    "sale_count": 0,
+                    "count": 88368,
+                    "view_count": 0
+                  },
+                  {
+                    "uuid": "480238fa-4768-4554-b94d-b7e38edbdd49",
+                    "name": "迪士尼（Disney）D11 儿童手表手机 电信2G 柠檬黄",
+                    "title": "智能手表定位手机 儿童防丢失 男女学生GPS监控 32位亲情号码通话安全卫士手环开学大促",
+                    "price": 69800,
+                    "original_price": 97720,
+                    "thumb": "http://shop.shiguopeng.cn/storage/products/list/6331c03a-3941-3d36-639a-40309e99e63d.jpeg",
+                    "sale_count": 0,
+                    "count": 88827,
+                    "view_count": 0
+                  }
+                ],
+                "count": 10
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{uuid}": {
+      "get": {
+        "summary": "获取商品详情",
+        "description": "获取商品详情, 包括富文本详情",
+        "tags": [
+          "Product"
+        ],
+        "security": [
+          {
+            "token": [
+
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "uuid",
+            "description": "商品的 uuid",
+            "type": "string",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ProductDetail"
+                  }
+                },
+                "count": {
+                  "type": "string",
+                  "default": "数据的总条数"
+                }
+              },
+              "example": {
+                "code": 200,
+                "msg": "success",
+                "data": {
+                  "uuid": "af0dc354-7f85-44c9-9336-dfea0603b489",
+                  "name": "三盟 名博D68 移动/联通2G老人手机 黑色",
+                  "title": "清仓特价！大哥大手机 可货到付款！复古功能手机，豪华气派好手机，传承经典，彰显非凡！！！",
+                  "price": 16800,
+                  "original_price": 21840,
+                  "thumb": "http://shop.shiguopeng.cn/storage/products/list/267a6a24-8a36-2a30-4276-58a8f74422c3.jpeg",
+                  "sale_count": 0,
+                  "count": 11754,
+                  "view_count": 3,
+                  "created_at": "2019-04-30 11:12:29",
+                  "content": "\t\t\t<div class=\"content_tpl\"><div class=\"formwork_bt\"><div class=\"formwork_bt_dz\"><span>产品特色</span><span class=\"s2\">Selling Point</span></div></div><div class=\"formwork\"><div class=\"formwork_titlecenter\">我的世界又大又轻巧</div><div class=\"formwork_text\">总想领略更宽广的天地？索尼XperiaTM Z Ultra XL39h，被赋予6.44英寸大气屏幕、6.5毫米锐薄机身以及212克轻盈体格，低调瞩目的设计却拥有令人惊叹的轻巧，轻而易举掌控在手。IP55/58精密防尘、防水性能，喜欢与水亲密接触，陪伴你游弋水中。你的世界因它的出现，而更自由无羁。</div></div><div class=\"formwork\"><div class=\"formwork_img\"><img src=\"http://img20.360buyimg.com/vc/g13/M08/08/1A/rBEhUlIgSjgIAAAAAAItvE35q6UAACnXAMWJCkAAi3U394.jpg\" alt=\"\" /></div></div><div class=\"formwork_bt\"><div class=\"formwork_bt_dz\"><span>产品功能</span><span class=\"s2\">Product Function</span></div></div><table align=\"center\" border=\"0\" width=\"750\" cellpadding=\"0\" cellspacing=\"6\">  <tbody><tr>    <td>。</div></div></div>",
+                  "pictures": [
+                    "http://shop.shiguopeng.cn/storage/products/list/c6d1bd44-e1b4-83b2-473c-2c009d88e491.jpeg",
+                    "http://shop.shiguopeng.cn/storage/products/list/eb2d8d4c-1f76-2555-3371-bf952915af54.jpeg"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tokens": {
+      "post": {
+        "summary": "登录接口",
+        "description": "登录账号信息用户换取 token",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "description": "用户名 {第三方登录的用户请进入个人中心设置用户名再使用此方式登录}",
+            "type": "string",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "name": "password",
+            "description": "密码",
+            "type": "string",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "响应中有 token 和 prefix, 如果之后请求放在请求头之中, 格式必须是(prefix token)",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "type": "object",
+                  "description": "所有数据都在data中",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "description": "jwt 前缀"
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "jwt 的授权验证信息"
+                    },
+                    "me": {
+                      "$ref": "#/definitions/Me",
+                      "description": "用户的个人信息, 也可 me 请求接口获取, 建议保存起来减少后续调用接口使用"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "code": 200,
+                "msg": "登录成功",
+                "data": {
+                  "prefix": "Bearer",
+                  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODA4MFwvYXBpXC92MVwvdG9rZW5zIiwiaWF0IjoxNTU3OTA2NjYwLCJleHAiOjE1NTc5MTAyNjAsIm5iZiI6MTU1NzkwNjY2MCwianRpIjoiZnBUdGozVWJmUVg2TWZlQiIsInN1YiI6NiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.kHN2pg04JuLwKSvCbcVBN3XdO05erOG3uVs9EfBJajM",
+                  "me": {
+                    "username": "david",
+                    "sex": 1,
+                    "email": "",
+                    "avatar": "https://avatars0.githubusercontent.com/u/28035971?v=4",
+                    "github_name": "大卫",
+                    "qq_name": "",
+                    "weibo_name": "",
+                    "score_all": 121845,
+                    "score_now": 121845,
+                    "login_days": 1,
+                    "last_login_date": "2019-03-22",
+                    "is_init_name": false,
+                    "is_init_email": true,
+                    "is_init_password": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "注销",
+        "description": "退出系统登录",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "type": "array",
+                  "description": "默认无数据"
+                }
+              },
+              "example": {
+                "code": 204,
+                "msg": "注销成功",
+                "data": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "注册接口",
+        "description": "注册用户并得到 token",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "description": "用户名",
+            "type": "string",
+            "in": "formData",
+            "required": true
+          },
+          {
+            "name": "password",
+            "description": "密码",
+            "type": "string",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "响应中有 token 和 prefix, 如果之后请求放在请求头之中, 格式必须是(prefix token)",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "type": "object",
+                  "description": "所有数据都在data中",
+                  "properties": {
+                    "prefix": {
+                      "type": "string",
+                      "description": "jwt 前缀"
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "jwt 的授权验证信息"
+                    },
+                    "me": {
+                      "$ref": "#/definitions/Me",
+                      "description": "用户的个人信息, 也可 me 请求接口获取, 建议保存起来减少后续调用接口使用"
+                    }
+                  }
+                }
+              },
+              "example": {
+                "code": 201,
+                "msg": "注册成功",
+                "data": {
+                  "prefix": "Bearer",
+                  "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODA4MFwvYXBpXC92MVwvdG9rZW5zIiwiaWF0IjoxNTU3OTA2NjYwLCJleHAiOjE1NTc5MTAyNjAsIm5iZiI6MTU1NzkwNjY2MCwianRpIjoiZnBUdGozVWJmUVg2TWZlQiIsInN1YiI6NiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.kHN2pg04JuLwKSvCbcVBN3XdO05erOG3uVs9EfBJajM",
+                  "me": {
+                    "username": "david",
+                    "sex": 1,
+                    "email": "",
+                    "avatar": "https://avatars0.githubusercontent.com/u/28035971?v=4",
+                    "github_name": "大卫",
+                    "qq_name": "",
+                    "weibo_name": "",
+                    "score_all": 0,
+                    "score_now": 0,
+                    "login_days": 1,
+                    "last_login_date": "2019-03-22",
+                    "is_init_name": false,
+                    "is_init_email": true,
+                    "is_init_password": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/own/me": {
+      "get": {
+        "summary": "个人信息",
+        "description": "获取个人信息(和登录获取到的信息一致)",
+        "tags": [
+          "OWN"
+        ],
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "$ref": "#/definitions/Me",
+                  "description": "用户的个人信息, 也可 me 请求接口获取, 建议保存起来减少后续调用接口使用"
+                }
+              },
+              "example": {
+                "code": 200,
+                "msg": "success",
+                "data": {
+                  "username": "david",
+                  "sex": 1,
+                  "email": "",
+                  "avatar": "https://avatars0.githubusercontent.com/u/28035971?v=4",
+                  "github_name": "david",
+                  "qq_name": "",
+                  "weibo_name": "",
+                  "score_all": 121855,
+                  "score_now": 121855,
+                  "login_days": 1,
+                  "last_login_date": "2019-05-15",
+                  "is_init_name": false,
+                  "is_init_email": true,
+                  "is_init_password": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/own/score_logs": {
+      "get": {
+        "summary": "积分记录",
+        "description": "用户操作积分获取记录",
+        "tags": [
+          "OWN"
+        ],
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/limit"
+          },
+          {
+            "$ref": "#/parameters/page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "integer",
+                  "description": "根据此状态码判断返回的数据, 200 成功, 201 创建成功, 204 修改成功, 其他均为失败"
+                },
+                "msg": {
+                  "type": "string",
+                  "description": "此次Http请求描述信息, 如果 code 为非成功, 那么可显示此条错误消息"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ScoreLog"
+                  }
+                },
+                "count": {
+                  "type": "string",
+                  "default": "数据的总条数"
+                }
+              },
+              "example": {
+                "code": 200,
+                "msg": "success",
+                "data": [
+                  {
+                    "id": 4,
+                    "description": "2019-05-15 16:59:29进行了登录。",
+                    "score": 5,
+                    "created_at": "2019-05-15 16:59:29"
+                  }
+                ],
+                "count": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Product": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "integer",
+          "default": "记录主键"
+        },
+        "name": {
+          "type": "string",
+          "description": "商品的名字"
+        },
+        "title": {
+          "type": "string",
+          "description": "商品简单的标题"
+        },
+        "price": {
+          "type": "number",
+          "description": "商品的价格"
+        },
+        "original_price": {
+          "type": "number",
+          "description": "商品原来的价格"
+        },
+        "thumb": {
+          "type": "string",
+          "description": "商品的缩略图"
+        },
+        "sale_count": {
+          "type": "integer",
+          "description": "销售的数量"
+        },
+        "count": {
+          "type": "integer",
+          "description": "库存量"
+        },
+        "view_count": {
+          "type": "integer",
+          "description": "浏览的次数"
+        }
+      }
+    },
+    "ProductDetail": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "integer",
+          "default": "记录主键"
+        },
+        "name": {
+          "type": "string",
+          "description": "商品的名字"
+        },
+        "title": {
+          "type": "string",
+          "description": "商品简单的标题"
+        },
+        "price": {
+          "type": "number",
+          "description": "商品的价格"
+        },
+        "original_price": {
+          "type": "number",
+          "description": "商品原来的价格"
+        },
+        "thumb": {
+          "type": "string",
+          "description": "商品的缩略图"
+        },
+        "sale_count": {
+          "type": "integer",
+          "description": "销售的数量"
+        },
+        "count": {
+          "type": "integer",
+          "description": "库存量"
+        },
+        "view_count": {
+          "type": "integer",
+          "description": "浏览的次数"
+        },
+        "pictures": {
+          "type": "array",
+          "description": "商品的轮播图",
+          "items": {
+            "type": "string"
+          }
+        },
+        "content": {
+          "type": "string",
+          "description": "商品的详细描述,富文本"
+        }
+      }
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "default": "记录主键"
+        },
+        "name": {
+          "type": "string",
+          "description": "分类的名字"
+        },
+        "description": {
+          "type": "string",
+          "description": "分类的描述"
+        },
+        "icon": {
+          "type": "string",
+          "description": "分类的图标"
+        },
+        "thumb": {
+          "type": "string",
+          "description": "分类的缩略图"
+        }
+      }
+    },
+    "ScoreLog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "default": "记录主键"
+        },
+        "description": {
+          "type": "string",
+          "description": "积分的获取说明"
+        },
+        "score": {
+          "type": "integer",
+          "description": "积分的获取值"
+        },
+        "created_at": {
+          "type": "string",
+          "description": "积分的获取时间"
+        }
+      }
+    },
+    "Me": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "用户登录名"
+        },
+        "sex": {
+          "type": "integer",
+          "enum": [
+            1, 2
+          ],
+          "description": "用户性别, 1 为男, 2 为女"
+        },
+        "email": {
+          "type": "string",
+          "description": "用户的邮箱"
+        },
+        "avatar": {
+          "type": "string",
+          "description": "用户的头像"
+        },
+        "github_name": {
+          "type": "string",
+          "description": "github 第三方昵称"
+        },
+        "qq_name": {
+          "type": "string",
+          "description": "qq 第三方昵称"
+        },
+        "weibo_name": {
+          "type": "string",
+          "description": "weibo 第三方昵称"
+        },
+        "score_all": {
+          "type": "integer",
+          "description": "用户的总积分"
+        },
+        "score_now": {
+          "type": "integer",
+          "description": "用户的剩余积分"
+        },
+        "login_days": {
+          "type": "integer",
+          "description": "用户连续登录天数"
+        },
+        "last_login_date": {
+          "type": "string",
+          "description": "上一次登录的日期"
+        },
+        "is_init_name": {
+          "type": "boolean",
+          "description": "是否是初始用户名, 如果是第三方登录的那么返回 true, 代表可以设置用户名 username"
+        },
+        "is_init_email": {
+          "type": "boolean",
+          "description": "是否是初始邮箱, 如果是第三方登录的那么返回 true, 代表可以设置用户名 email"
+        },
+        "is_init_password": {
+          "type": "boolean",
+          "description": "是否是初始密码, 如果是第三方登录的那么返回 true, 代表可以不用输入旧密码也可以设置新密码"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "使用登录返回的 前缀+token, 或者刷新返回的值. 实例值:`Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvdG9rZW5zIiwiaWF0IjoxNTU3ODI1NjcyLCJleHAiOjE1NTc4MjkyNzIsIm5iZiI6MTU1NzgyNTY3MiwianRpIjoidnFySVlZS0p2UU1qSnhRNCIsInN1YiI6NiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.AOlUsM51oDz4yoAFsXzz5n1E65Bo17pKUnDg_Nh-DnY`"
+    }
+  }
+}
